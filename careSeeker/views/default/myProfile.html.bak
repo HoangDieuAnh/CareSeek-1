@@ -1,0 +1,42 @@
+{{extend 'profile_layout.html'}}
+{{block profile_content}}
+    <div class="container-fluid">
+         <div class="col-xs-10 col-xs-offset-2 col-sm-10 col-sm-offset-2 col-md-10 col-md-offset-2">
+            <div class="row">
+                <h1 class="page-header">User Name Placeholder</h1>
+            </div> 
+            <div class="row">
+                <h1> Profile </h1>
+                <div>
+                </div>
+            </div> <!-- end of profile row -->   
+            <div class="row">
+                <h1> Clients </h1>
+                <div>
+                </div>
+            </div> <!-- end of clients row -->   
+            <div class="row">
+                <h1> Contact Information </h1>
+                <div>
+                </div>
+            </div> <!-- end of Contact row -->   
+            <div class="row">
+                <h1> Invoices </h1>
+                <div>
+                </div>
+            </div> <!-- end of Invoices row -->   
+            <div class="row">
+                <h1> Resume </h1>
+            </div> <!-- end of Resume row -->   
+        </div> 
+    </div>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="js/jquery-1.11.0.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/formTest.js"></script>
+    <script src="js/getProfile.js"></script>
+{{end}}
+{{=BEAUTIFY(response._vars)}}

@@ -1,0 +1,131 @@
+# -*- coding: utf-8 -*-
+# this file is released under public domain and you can use without limitations
+
+#########################################################################
+## This is a sample controller
+## - index is the default action of any application
+## - user is required for authentication and authorization
+## - download is for downloading files uploaded in the db (does streaming)
+## - call exposes all registered services (none by default)
+#########################################################################
+def index():
+    """
+    example action using the internationalization operator T and flash
+    rendered by views/default/index.html or views/generic.html
+
+    if you need a simple wiki simply replace the two lines below with:
+    return auth.wiki()
+    """
+    return dict()
+
+def about():
+    return dict()
+def contact():
+    return dict()
+def dashboard():
+    return dict()
+def feedback():
+    return dict()
+def myProfile():
+    return dict()
+def mySchedule():
+    return dict()
+def help():
+    return dict()
+def settings():
+    return dict()
+def search():
+    return dict()
+def legal():
+    return dict()
+def privacy():
+    return dict()
+
+def user():
+    
+    """
+    exposes:
+    http://..../[app]/default/user/login
+    http://..../[app]/default/user/logout
+    http://..../[app]/default/user/register
+    http://..../[app]/default/user/profile
+    http://..../[app]/default/user/retrieve_password
+    http://..../[app]/default/user/change_password
+    http://..../[app]/default/user/manage_users (requires membership in
+    use @auth.requires_login()
+        @auth.requires_membership('group name')
+        @auth.requires_permission('read','table name',record_id)
+    to decorate functions that need access control
+    """
+    auth.settings.formstyle = 'bootstrap'
+    auth.settings.register_next = URL('user')
+    auth.settings.logged_url = URL('index')
+
+    auth.settings.login_next = URL('index')
+    return dict(form=auth())
+
+@cache.action()
+def download():
+    """
+    allows downloading of uploaded files
+    http://..../[app]/default/download/[filename]
+    """
+    return response.download(request, db)
+
+
+def call():
+    """
+    exposes services. for example:
+    http://..../[app]/default/call/jsonrpc
+    decorate with @services.jsonrpc the functions to expose
+    supports xml, json, xmlrpc, jsonrpc, amfrpc, rss, csv
+    """
+    return service()
+
+
+@auth.requires_signature()
+def data():
+    """
+    http://..../[app]/default/data/tables
+    http://..../[app]/default/data/create/[table]
+    http://..../[app]/default/data/read/[table]/[id]
+    http://..../[app]/default/data/update/[table]/[id]
+    http://..../[app]/default/data/delete/[table]/[id]
+    http://..../[app]/default/data/select/[table]
+    http://..../[app]/default/data/search/[table]
+    but URLs must be signed, i.e. linked with
+      A('table',_href=URL('data/tables',user_signature=True))
+    or with the signed load operator
+      LOAD('default','data.load',args='tables',ajax=True,user_signature=True)
+    """
+    return dict(form=crud())
+
+
+def ask():
+    form = SQLFORM.factory(
+    Field('name', requires=IS_NOT_EMPTY()),
+    Field('email', requires =[ IS_EMAIL(error_message='invalid email!'), IS_NOT_EMPTY() ]),
+    Field('subject', requires=IS_NOT_EMPTY()),
+    Field('message', requires=IS_NOT_EMPTY(), type='text')
+    )
+    if form.process().accepted:
+        session.name = form.vars.name
+        session.email = form.vars.email
+        session.subject = form.vars.subject
+        session.message = form.vars.message
+
+        x = mail.send(to=['danielce90@gmail.com'],
+            subject= session.subject,
+            message= "Hello this is an email send from minerva.com from contact us form.\nName:"+ session.name+" \nEmail : " + session.email +"\nSubject : "+session.subject +"\nMessage : "+session.message+ ".\n "
+        )
+
+        if x == True:
+            response.flash = 'email sent sucessfully.'
+        else:
+            response.flash = 'fail to send email sorry!'
+
+        #response.flash = 'form accepted.'
+    elif form.errors:
+        response.flash='form has errors.'
+
+    return dict(form=form)

@@ -1,0 +1,70 @@
+{{extend 'profile_layout.html'}}
+{{block profile_content}}
+<div class="col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1">
+        <h1 class="page-header">Settings</h1>
+        <form role="form" action="" method="post" id="settingsForm">
+            <div class="form-group">
+                <label for="InputEmail">Your Email</label>
+                <div class="input-group">
+                    <input type="email" class="form-control" id="email" name="email" placeholder="example@email.com">
+                    <span class="input-group-addon"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="InputEmail">Old password</label>
+                <div class="input-group">
+                    <input type="password" class="form-control" id="oldPass" name="oldPass" placeholder="Enter old password">
+                    <span class="input-group-addon"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="InputEmail">New password</label>
+                <div class="input-group">
+                    <input type="password" class="form-control" id="newPass" name="newPass" placeholder="Enter new password...">
+                    <span class="input-group-addon"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="InputEmail">Confirm new password</label>
+                <div class="input-group">
+                    <input type="password" class="form-control" id="confNewPass" name="confNewPass" placeholder="Enter new password again...">
+                    <span class="input-group-addon"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="InputEmail">Your Interests</label>
+                <div class="input-group">
+                    <textarea name="description" id="description" class="form-control" rows="5" placeholder="Enter some interests..."></textarea>
+                    <span class="input-group-addon"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="InputEmail">Your location</label>
+                <div class="input-group">
+                    <input type="email" class="form-control" id="location" name="location" placeholder="Enter location...">
+                    <span class="input-group-addon"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="InputEmail">Your contact number</label>
+                <div class="input-group">
+                    <input type="email" class="form-control" id="contact" name="contact" placeholder="Enter contact number...">
+                    <span class="input-group-addon"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="InputEmail">Update your CV</label>
+                <div class="input-group">
+                    <input type="file" title="Search for a file to add">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="InputMessage">Description</label>
+                <div class="input-group">
+                    <textarea name="description" id="description" class="form-control" rows="5" placeholder="A short description of yourself/child..."></textarea>
+                    <span class="input-group-addon"></span>
+                </div>
+            </div>
+            <input type="submit" name="submit" id="submit" value="Save" class="btn btn-primary pull-right" id="updateSettings">
+        </form>
+    </div>  {{end}}

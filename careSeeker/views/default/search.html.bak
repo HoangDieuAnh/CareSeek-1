@@ -1,0 +1,45 @@
+{{extend 'profile_layout.html'}}
+{{block profile_content}}
+<div class="row">
+            <div class="col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2 main">
+                <h1 class="page-header">Advanced Search</h1>
+                <form role="form" action="" method="post" id="searchForm">
+                    <div class="input-group">
+                        <span class="input-group-addon">Carer's first name:</span>
+                        <input type="text" class="form-control" placeholder="First name..." id="carerFirstName">
+                    </div><br>
+                     <div class="input-group">
+                        <span class="input-group-addon">Carer's last name:</span>
+                      <input type="text" class="form-control" placeholder="Last name..." id="carerLastName">
+                    </div><br>
+                     <div class="input-group">
+                        <span class="input-group-addon">Suburb</span>
+                        <input type="text" class="form-control" placeholder="Suburb..." id="suburb">
+                    </div><br>
+                     <div class="input-group">
+                        <span class="input-group-addon">Interests</span>
+                        <input type="text" class="form-control" placeholder="Interests, space separated..." id="interests">
+                    </div><br>
+                     <div class="input-group">
+                        <span class="input-group-addon">Age range</span>
+                        <input type="text" class="form-control" placeholder="Minimum and maximum age, space separated..." id="age">
+                    </div><br>
+                      <select id="genderPref">
+                          <option>Select prefered Gender...</option>
+                          <option>Either</option>
+                          <option>Female</option>
+                          <option>Male</option>
+                      </select>
+                    <input type="submit" name="submit" id="submit" value="Search!" class="btn btn-primary pull-right" >
+                </form>
+            </div> 
+        <!--End of the search form -->
+        <!--Start of the results div -->
+        <div class="row">
+            <div class="col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2 main">
+                <h1 class="page-header"></h1>
+                <div id="searchResults">
+                </div>
+            </div>
+        </div>
+{{end}}

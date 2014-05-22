@@ -1,0 +1,35 @@
+{{extend 'layout.html'}}
+{{block content}}
+<div class='jumbotron'>
+<h1>CareSeek</h1>
+        <p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.</p>
+        
+        
+    
+{{if auth.is_logged_in():}}
+          <a class="btn btn-primary btn-lg" data-toggle="modal"  href='{{=URL("default", "user/logout")}}'>Logout</a>
+
+    {{else:}}
+    <a class="btn btn-primary btn-lg"  href='{{=URL("default", "user/register")}}'>Sign-up now!</a>
+      <a class="btn btn-primary btn-lg" data-toggle="modal"  href='{{=URL("default", "user/login")}}'>Login</a>
+    {{pass}}
+     </div> 
+      <div class="row">
+        <div class="col-sm-4"> 
+          <h1>Save stress</h1>
+          <p class="lead">A single place to search for quality carers. CareSeek indexes a substantial number of quality carers eliminating the need to search in multiple places.</p>
+        </div>
+      
+        <div class="col-sm-4"> 
+          <h1>Manage your time</h1>
+          <p class="lead">We provide you with an easy and simple to use interface in order to manage new appointments, upcoming appointments and recurring appointments.</p>
+        </div>
+
+        <div class="col-sm-4"> 
+          <h1>Manage funding</h1>
+          <p class="lead">Funding for carer services is a limited resource. CareSeek saves you money by cutting overheads associated with third party agencies.</p>
+        </div>
+{{end}}
+   <script src="{{=URL('static','sanitise.js')}}"></script>
+   <script src="{{=URL('static','search.js')}}"></script>
+   <script src="{{=URL('static','userReg.js')}}"></script>
