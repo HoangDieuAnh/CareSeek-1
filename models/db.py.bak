@@ -39,25 +39,19 @@ response.generic_patterns = ['*'] if request.is_local else []
 ## - old style crud actions
 ## (more options discussed in gluon/tools.py)
 #########################################################################
-TYPE=[
-                   T('Carer'),
-                   T('Care seeker'),
-                   T('other')
-                ]
-gender=[
-T('Male'),
-T('Female'),
-T('Other')
-]
+TYPE=[ T('Carer'), T('Care Seeker') ]
+gender=[ T('Male'), T('Female') ]
+
 from gluon.tools import Auth, Crud, Service, PluginManager, prettydate
 auth = Auth(db)
 crud, service, plugins = Crud(db), Service(), PluginManager()
+
 auth.settings.extra_fields['auth_user']= [
-Field('Phone', 'integer', requires=IS_NOT_EMPTY()),
+    Field('Phone', 'integer', requires=IS_NOT_EMPTY()),
     Field('Age', 'integer'),
-    Field('Gender', 'string',requires=IS_IN_SET(gender,zero=T('--Please select--'))),
-    Field('Profile_Pict','upload'),
-    Field('User_Type', 'string',requires=IS_IN_SET(TYPE, labels=['Looking for a job', 'Looking for a carer', 'other'],zero=T('--choose your purpose--')))]
+    Field('Gender', 'string', requires=IS_IN_SET(gender, zero=T('--Please select--'))),
+    Field('User_Type', 'string', requires=IS_IN_SET(TYPE, labels = ['Looking for a Care Seeker', 'Looking for a Carer'], zero = T('-- Why are you using this site? --')))]
+
 ## create all tables needed by auth if not custom tables
 auth.define_tables(username=True, signature=False)
 
@@ -71,7 +65,6 @@ mail.settings.login = 'username:password'
 auth.settings.registration_requires_verification = False
 auth.settings.registration_requires_approval = False
 auth.settings.reset_password_requires_verification = True
-
 ## if you need to use OpenID, Facebook, MySpace, Twitter, Linkedin, etc.
 ## register with janrain.com, write your domain:api_key in private/janrain.key
 from gluon.contrib.login_methods.rpx_account import use_janrain
@@ -101,6 +94,7 @@ db.define_table('WorkWith',
 db.define_table('ExperienceRequirementType',
     Field('ExperienceType', 'string')# we can use this as dropdown box options
     )
+
 db.define_table('Experience',
     Field('ExperienceType', 'reference ExperienceRequirementType'),
     Field('UserID', 'reference auth_user'),
@@ -108,7 +102,6 @@ db.define_table('Experience',
     Field('Period', 'integer'), # in months
     Field('Details','text')
     )
-
 
 db.define_table('Requirement',
     Field('RequirementType', 'reference ExperienceRequirementType'),
@@ -158,6 +151,43 @@ db.define_table('Scores',
    Field('RMID', 'reference RatingMetric'),
    Field('Score', 'integer')
    )
+
+# db.define_table('Settings',
+#     Field('MyUserID', 'reference auth_user'),
+#     Field('StreetNumber', 'integer'),
+#     Field('Street', 'string'),
+#     Field('Postcode', 'integer'),
+#     Field('Area', 'string'),
+#     Field('City', 'string')
+#     )
+
+db.define_table('CareSeeker',
+    Field("UserId", 'reference auth_user'),
+    Field('Email', 'reference auth_user'),
+    Field('FirstName', 'reference auth_user'),
+    Field('LastName', 'reference auth_user'),
+    Field('Password', 'reference auth_user'),
+    Field('Description', 'text'),
+    Field('ProfilePic', 'upload'),
+    Field('Age', 'reference auth_user'),
+	Field('Phone', 'reference auth_user'),
+    Field('Gender', 'reference auth_user'),
+)
+
+db.define_table('Carer',
+    Field("UserId", 'reference auth_user'),
+    Field('Email', 'reference auth_user'),
+    Field('FirstName', 'reference auth_user'),
+    Field('LastName', 'reference auth_user'),
+    Field('Password', 'reference auth_user'),
+    Field('Description', 'text'),
+    Field('CV', 'upload'),
+    Field('ProfilePic', 'upload'),
+    Field('Age', 'reference auth_user'),
+	Field('Phone', 'reference auth_user'),
+    Field('Gender', 'reference auth_user'),
+)
+
 
 
 #enable auditing

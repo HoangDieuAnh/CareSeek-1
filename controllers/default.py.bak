@@ -9,13 +9,6 @@
 ## - call exposes all registered services (none by default)
 #########################################################################
 def index():
-    """
-    example action using the internationalization operator T and flash
-    rendered by views/default/index.html or views/generic.html
-
-    if you need a simple wiki simply replace the two lines below with:
-    return auth.wiki()
-    """
     return dict()
 
 def about():
@@ -58,10 +51,10 @@ def user():
     to decorate functions that need access control
     """
     auth.settings.formstyle = 'bootstrap'
-    auth.settings.register_next = URL('user')
+    auth.settings.register_next = URL('profile')
     auth.settings.logged_url = URL('index')
 
-    auth.settings.login_next = URL('index')
+    auth.settings.login_next = URL('dashboard')
     return dict(form=auth())
 
 @cache.action()
@@ -100,32 +93,90 @@ def data():
     """
     return dict(form=crud())
 
+def loadEmail():
+	query = db.Carer.UserId == auth.user.id
+	user = db(query).select(db.Carer.Email)
+	for entry in user:
+		email = entry.Email.email
+	return email
 
-def ask():
-    form = SQLFORM.factory(
-    Field('name', requires=IS_NOT_EMPTY()),
-    Field('email', requires =[ IS_EMAIL(error_message='invalid email!'), IS_NOT_EMPTY() ]),
-    Field('subject', requires=IS_NOT_EMPTY()),
-    Field('message', requires=IS_NOT_EMPTY(), type='text')
-    )
-    if form.process().accepted:
-        session.name = form.vars.name
-        session.email = form.vars.email
-        session.subject = form.vars.subject
-        session.message = form.vars.message
+def loadPhone():
+	query = db.Carer.UserId == auth.user.id
+	user = db(query).select(db.Carer.Contact)
+	for entry in user:
+		Phone = entry.Contact.Phone
+	print Phone
+	return Phone
 
-        x = mail.send(to=['danielce90@gmail.com'],
-            subject= session.subject,
-            message= "Hello this is an email send from minerva.com from contact us form.\nName:"+ session.name+" \nEmail : " + session.email +"\nSubject : "+session.subject +"\nMessage : "+session.message+ ".\n "
-        )
+def loadPass():
+	query = db.Carer.UserId == auth.user.id
+	user = db(query).select(db.Carer.Password)
+	for entry in user:
+		Password = entry.Password.password
+	return Password
 
-        if x == True:
-            response.flash = 'email sent sucessfully.'
-        else:
-            response.flash = 'fail to send email sorry!'
+def loadFirstName():
+	query = db.Carer.UserId == auth.user.id
+	user = db(query).select(db.Carer.FirstName)
+	for entry in user:
+		FirstName = entry.FirstName.first_Name
+	return FirstName
 
-        #response.flash = 'form accepted.'
-    elif form.errors:
-        response.flash='form has errors.'
+def loadLastName():
+	query = db.Carer.UserId == auth.user.id
+	user = db(query).select(db.Carer.LastName)
+	for entry in user:
+		LastName = entry.LastName.last_Name
+	print LastName
+	return LastName
 
-    return dict(form=form)
+def loadCV():
+	if(auth.user.User_Type == "Carer"):
+		query = db.Carer.UserId == auth.user.id
+
+	elif(auth.user.User_Type == "Care Seeker"):
+		query = db.Carer.UserId == auth.user.id
+
+	user = db(query).select(db.Carer.CV)
+	for entry in user:
+		CV = entry.CV
+	return CV
+
+def loadInterests():
+	interests = ['Playing guitar','Reading','Romantic walks to the fridge','Basketball','Breaking g-strings']
+	return interests
+
+def loadDescription():
+	query = db.Carer.UserId == auth.user.id
+	user = db(query).select(db.Carer.Description)
+	user = db(query).select(db.Carer.Description)
+	for entry in user:
+		Description = entry.Description
+	return Description
+
+def loadProfilePic():
+	query = db.Carer.UserId == auth.user.id
+	user = db(query).select(db.Carer.ProfilePic)
+	user = db(query).select(db.Carer.ProfilePic)
+	for entry in user:
+		ProfilePic = entry.ProfilePic
+	return ProfilePic
+
+def loadAge():
+	query = db.Carer.UserId == auth.user.id
+	user = db(query).select(db.Carer.Age)
+	user = db(query).select(db.Carer.Age)
+	for entry in user:
+		Age = entry.Age.Age
+	return Age
+
+def loadGender():
+	query = db.Carer.UserId == auth.user.id
+	user = db(query).select(db.Carer.Gender)
+	user = db(query).select(db.Carer.Gender)
+	for entry in user:
+		Gender = entry.Gender.Gender
+	return Gender
+
+# def loadProfile():
+#     pass

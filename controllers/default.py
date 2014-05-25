@@ -9,13 +9,6 @@
 ## - call exposes all registered services (none by default)
 #########################################################################
 def index():
-    """
-    example action using the internationalization operator T and flash
-    rendered by views/default/index.html or views/generic.html
-
-    if you need a simple wiki simply replace the two lines below with:
-    return auth.wiki()
-    """
     return dict()
 
 def about():
@@ -58,10 +51,10 @@ def user():
     to decorate functions that need access control
     """
     auth.settings.formstyle = 'bootstrap'
-    auth.settings.register_next = URL('user')
+    auth.settings.register_next = URL('profile')
     auth.settings.logged_url = URL('index')
 
-    auth.settings.login_next = URL('index')
+    auth.settings.login_next = URL('dashboard')
     return dict(form=auth())
 
 @cache.action()
@@ -99,3 +92,91 @@ def data():
       LOAD('default','data.load',args='tables',ajax=True,user_signature=True)
     """
     return dict(form=crud())
+
+def loadEmail():
+	query = db.Carer.UserId == auth.user.id
+	user = db(query).select(db.Carer.Email)
+	for entry in user:
+		email = entry.Email.email
+	return email
+
+def loadPhone():
+	query = db.Carer.UserId == auth.user.id
+	user = db(query).select(db.Carer.Contact)
+	for entry in user:
+		Phone = entry.Contact.Phone
+	print Phone
+	return Phone
+
+def loadPass():
+	query = db.Carer.UserId == auth.user.id
+	user = db(query).select(db.Carer.Password)
+	for entry in user:
+		Password = entry.Password.password
+	return Password
+
+def loadFirstName():
+	query = db.Carer.UserId == auth.user.id
+	user = db(query).select(db.Carer.FirstName)
+	for entry in user:
+		FirstName = entry.FirstName.first_name
+	return FirstName
+
+def loadLastName():
+	query = db.Carer.UserId == auth.user.id
+	user = db(query).select(db.Carer.LastName)
+	for entry in user:
+		LastName = entry.LastName.last_name
+	print LastName
+	return LastName
+
+def loadCV():
+	if(auth.user.User_Type == "Carer"):
+		query = db.Carer.UserId == auth.user.id
+
+	elif(auth.user.User_Type == "Care Seeker"):
+		query = db.Carer.UserId == auth.user.id
+
+	user = db(query).select(db.Carer.CV)
+	for entry in user:
+		CV = entry.CV
+	return CV
+
+def loadInterests():
+	interests = ['Playing guitar','Reading','Romantic walks to the fridge','Basketball','Breaking g-strings']
+	return interests
+
+def loadDescription():
+	query = db.Carer.UserId == auth.user.id
+	user = db(query).select(db.Carer.Description)
+	user = db(query).select(db.Carer.Description)
+	for entry in user:
+		Description = entry.Description
+	return Description
+
+def loadProfilePic():
+	query = db.Carer.UserId == auth.user.id
+	user = db(query).select(db.Carer.ProfilePic)
+	user = db(query).select(db.Carer.ProfilePic)
+	for entry in user:
+		ProfilePic = entry.ProfilePic
+	return ProfilePic
+
+def loadAge():
+	query = db.Carer.UserId == auth.user.id
+	user = db(query).select(db.Carer.Age)
+	user = db(query).select(db.Carer.Age)
+	for entry in user:
+		Age = entry.Age.Age
+	return Age
+
+def loadGender():
+	query = db.Carer.UserId == auth.user.id
+	user = db(query).select(db.Carer.Gender)
+	user = db(query).select(db.Carer.Gender)
+	for entry in user:
+		Gender = entry.Gender.Gender
+	return Gender
+
+# def loadProfile():
+#     pass

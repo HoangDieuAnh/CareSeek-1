@@ -1,13 +1,18 @@
 {{extend 'profile_layout.html'}}
 {{block profile_content}}
+<script type="text/javascript">
+    var firstName = {{=LOAD('default', 'loadFirstName.load', ajax=True)}};
+    alert(firstName);
+</script>
     <div class="container-fluid">
          <div class="col-xs-10 col-xs-offset-2 col-sm-10 col-sm-offset-2 col-md-10 col-md-offset-2">
             <div class="row">
-                <h1 class="page-header">User Name Placeholder</h1>
+                <h1 class="page-header">{{=LOAD('default', 'loadFirstName.load')}} {{=LOAD('default', 'loadLastName.load')}}</h1>
             </div> 
             <div class="row">
                 <h1> Profile </h1>
                 <div>
+                    {{=LOAD('default', 'loadFirstName.load')}}
                 </div>
             </div> <!-- end of profile row -->   
             <div class="row">
@@ -41,4 +46,3 @@
     <script src="js/formTest.js"></script>
     <script src="js/getProfile.js"></script>
 {{end}}
-{{=BEAUTIFY(response._vars)}}
