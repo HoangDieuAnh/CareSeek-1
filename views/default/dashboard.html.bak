@@ -2,10 +2,23 @@
 
 {{block profile_content}}
     <div class="col-sm-8 col-md-8 main" id="calender">
-        {{=TAG('<input type=\"password\" class=\"form-control\" id=\"oldPass\" name=\"oldPass\" placeholder=\"Enter old password\">')}}
-        <h1 class="page-header">Upcoming Events</h1>
+        <h1 class="page-header">Wellcome to {{=user.first_name}} {{=user.last_name}} page</h1>
+        <p>I am a {{=user.User_Type}}</p>
+        </p>
         <pre>
+        {{if not same:}}
+        {{if not subscribe:}}
+       <li><a href='{{=URL("default", "subscribe",args=user.id)}}' class="btn btn-success">Forge link</a></li>
+        {{else:}}
+        <button type="button" class="btn btn-success">Subscribed</button>
+        {{pass}}
+        {{pass}}
         OVERVIEW
+        I am working with:
+        {{for client in my_clients:}}
+       _ {{=client[0]}} {{=client[1]}} 
+        {{pass}}
+        
         This website is operated by CareSeek. Throughout the site, the terms “we”, “us” and “our” refer to CareSeek. CareSeek offers this website, including all information, tools and services available from this site to you, the user, conditioned upon your acceptance of all terms, conditions, policies and notices stated here.
 
         By visiting our site and/or purchasing something from us, you engage in our “Service” and agree to be bound by the following terms and conditions (“Terms of Service”, “Terms”), including those additional terms and conditions and policies referenced herein and/or available by hyperlink. These Terms of Service apply to all users of the site, including without limitation users who are browsers, vendors, customers, merchants, and/ or contributors of content.

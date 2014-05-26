@@ -1,3 +1,8 @@
 {{extend 'layout.html'}}
-<h1>This is the default/about.html template</h1>
-{{=BEAUTIFY(response._vars)}}
+{{block content}}
+<h1> Our users</h1>
+
+{{for user in users:}}
+{{=A(user.first_name,_href=URL('default', 'dashboard',args=user.id))}}<br/>
+{{pass}}
+{{end}}

@@ -51,7 +51,9 @@ auth.settings.extra_fields['auth_user']= [
     Field('Age', 'integer'),
     Field('Gender', 'string', requires=IS_IN_SET(gender, zero=T('--Please select--'))),
     Field('User_Type', 'string', requires=IS_IN_SET(TYPE, labels = ['Looking for a Care Seeker', 'Looking for a Carer'], zero = T('-- Why are you using this site? --')))]
-
+auth.settings.extra_fields['auth_user']= [
+    Field('MyPict', 'upload'),
+    Field('AboutMe', 'text')]
 ## create all tables needed by auth if not custom tables
 auth.define_tables(username=True, signature=False)
 
@@ -87,8 +89,8 @@ use_janrain(auth, filename='private/janrain.key')
 ## >>> for row in rows: print row.id, row.myfield
 #########################################################################
 db.define_table('WorkWith',
-    Field('Carer', 'reference auth_user'),
-    Field('CareSeeker', 'reference auth_user')
+    Field('Carer', 'integer'),
+    Field('CareSeeker', 'integer')
     )
 ## use this table for both requirements and experience => easier to search
 db.define_table('ExperienceRequirementType',
@@ -163,32 +165,21 @@ db.define_table('Scores',
 
 db.define_table('CareSeeker',
     Field("UserId", 'reference auth_user'),
-    Field('Email', 'reference auth_user'),
-    Field('FirstName', 'reference auth_user'),
-    Field('LastName', 'reference auth_user'),
-    Field('Password', 'reference auth_user'),
     Field('Description', 'text'),
-    Field('ProfilePic', 'upload'),
-    Field('Age', 'reference auth_user'),
-	Field('Phone', 'reference auth_user'),
-    Field('Gender', 'reference auth_user'),
+    Field('ProfilePic', 'upload')
+
 )
 
 db.define_table('Carer',
     Field("UserId", 'reference auth_user'),
-    Field('Email', 'reference auth_user'),
-    Field('FirstName', 'reference auth_user'),
-    Field('LastName', 'reference auth_user'),
-    Field('Password', 'reference auth_user'),
     Field('Description', 'text'),
     Field('CV', 'upload'),
-    Field('ProfilePic', 'upload'),
-    Field('Age', 'reference auth_user'),
-	Field('Phone', 'reference auth_user'),
-    Field('Gender', 'reference auth_user'),
+    Field('ProfilePic', 'upload')
 )
 
 
+#db.WorkWith.Carer.requires = IS_IN_DB(db, db.auth_user.id)
+#db.WorkWith.CareSeeker.requires = IS_IN_DB(db, db.auth_user.id)
 
 #enable auditing
 auth.enable_record_versioning(db)

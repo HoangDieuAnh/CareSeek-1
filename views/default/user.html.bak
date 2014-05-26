@@ -13,7 +13,8 @@ pass}}
 			<button type="submit" class="btn btn-primary btn-lg">Log out</button>
 		</form>
     {{pass}}
-    {{if request.args(0)=='register':=form}}
+    {{if request.args(0)=='register':
+	=form}}
     {{pass}}
 </div>
 {{end}}

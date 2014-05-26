@@ -9,25 +9,74 @@
 ## - call exposes all registered services (none by default)
 #########################################################################
 def index():
-    """
-    example action using the internationalization operator T and flash
-    rendered by views/default/index.html or views/generic.html
-
-    if you need a simple wiki simply replace the two lines below with:
-    return auth.wiki()
-    """
     return dict()
-
+@auth.requires_login()
+def subscribe():
+    check=check_type(request.args(0))
+    if check==1:
+        db.WorkWith.insert(Carer=int(auth.user.id), CareSeeker=int(request.args(0)))
+    if check==2:
+        db.WorkWith.insert(CareSeeker=int(auth.user.id), Carer=int(request.args(0)))
+    redirect(URL('default', 'myProfile', args=request.args(0)))
+    return dict()
+@auth.requires_login()
 def about():
-    return dict()
+    users=db(db.auth_user.id>0).select()
+    return dict(users=users)
 def contact():
     return dict()
+# return 1 if current user is carer, other is care seeker or return 2 
+def check_type(other):
+    other_one=db(db.auth_user.id==other).select()
+    if (auth.user.User_Type=="Carer") and (other_one[0].User_Type=="Care Seeker"):
+        return 1
+    if (auth.user.User_Type=="Care Seeker") and (other_one[0].User_Type=="Carer"):
+        return 2
+    return 0
+
+def find_connection(userID):
+    my_list=None
+    userID=int(userID)
+    if db(db.auth_user.id==userID).select()[0].User_Type=="Care Seeker":
+        my_list=db.executesql('SELECT first_name, last_name, id FROM auth_user WHERE id IN (SELECT Carer FROM WorkWith WHERE CareSeeker={arg1});'.format(arg1=userID))
+        #my_list=db(db.WorkWith.CareSeeker==userID).select(db.WorkWith.Carer)
+    else:
+        #my_list=db(db.WorkWith.Carer==userID).select(db.WorkWith.CareSeeker)
+        my_list=db.executesql('SELECT first_name, last_name, id FROM auth_user WHERE id IN (SELECT CareSeeker FROM WorkWith WHERE Carer={arg1});'.format(arg1=userID))
+    return my_list
+    
+@auth.requires_login()
 def dashboard():
+    # find in the workwith table to see if they already have a connection or not
+    
+   ##return list of forged link here
+   
     return dict()
 def feedback():
     return dict()
+def find_relations(user_id):
+    check=check_type(user_id)
+    subscribe=None
+    co_worker="Co-Worker"
+    same=True
+    my_clients=find_connection(user_id)
+    if check==1:
+        same=False
+        
+        subscribe=db((db.WorkWith.Carer==auth.user.id) & (db.WorkWith.CareSeeker==user_id)).select()
+    if check==2:
+        same=False
+        
+        subscribe=db((db.WorkWith.CareSeeker==auth.user.id) & (db.WorkWith.Carer==user_id)).select()
+    
+        
+    return subscribe, same, my_clients, co_worker
+@auth.requires_login()
 def myProfile():
-    return dict()
+    user= db(db.auth_user.id==request.args(0)).select().first()
+    subscribe, same, my_clients, co_worker=find_relations(request.args(0))
+    return dict(user=user, subscribe=subscribe, same=same, my_clients=my_clients, co_worker=co_worker)
+
 def mySchedule():
     return dict()
 def help():
@@ -58,7 +107,7 @@ def user():
     to decorate functions that need access control
     """
     auth.settings.formstyle = 'bootstrap'
-    auth.settings.register_next = URL('profile')
+    auth.settings.register_next = URL('dashboard')
     auth.settings.logged_url = URL('index')
 
     auth.settings.login_next = URL('dashboard')
@@ -100,81 +149,6 @@ def data():
     """
     return dict(form=crud())
 
-def loadEmail():
-	query = db.Carer.UserId == auth.user.id
-	user = db(query).select(db.Carer.Email)
-	for entry in user:
-		email = entry.Email.email
-	return email
-
-def loadPass():
-	query = db.Carer.UserId == auth.user.id
-	user = db(query).select(db.Carer.Password)
-	for entry in user:
-		Password = entry.Password.password
-	return Password
-
-def loadFirstName():
-	query = db.Carer.UserId == auth.user.id
-	user = db(query).select(db.Carer.FirstName)
-	for entry in user:
-		FirstName = entry.FirstName.first_Name
-	return FirstName
-
-def loadLastName():
-	query = db.Carer.UserId == auth.user.id
-	user = db(query).select(db.Carer.LastName)
-	for entry in user:
-		LastName = entry.LastName.last_Name
-	return LastName
-
-def loadCV():
-	if(auth.user.User_Type == "Carer"):
-		query = db.Carer.UserId == auth.user.id
-
-	elif(auth.user.User_Type == "Care Seeker"):
-		query = db.Carer.UserId == auth.user.id
-
-	user = db(query).select(db.Carer.CV)
-	for entry in user:
-		CV = entry.CV
-	return CV
-
-def loadInterests():
-	interests = ['Playing guitar','Reading','Romantic walks to the fridge','Basketball','Breaking g-strings']
-	return interests
-
-def loadDescription():
-	query = db.Carer.UserId == auth.user.id
-	user = db(query).select(db.Carer.Description)
-	user = db(query).select(db.Carer.Description)
-	for entry in user:
-		Description = entry.Description
-	return Description
-
-def loadProfilePic():
-	query = db.Carer.UserId == auth.user.id
-	user = db(query).select(db.Carer.ProfilePic)
-	user = db(query).select(db.Carer.ProfilePic)
-	for entry in user:
-		ProfilePic = entry.ProfilePic
-	return ProfilePic
-
-def loadAge():
-	query = db.Carer.UserId == auth.user.id
-	user = db(query).select(db.Carer.Age)
-	user = db(query).select(db.Carer.Age)
-	for entry in user:
-		Age = entry.Age.Age
-	return Age
-
-def loadGender():
-	query = db.Carer.UserId == auth.user.id
-	user = db(query).select(db.Carer.Gender)
-	user = db(query).select(db.Carer.Gender)
-	for entry in user:
-		Gender = entry.Gender.Gender
-	return Gender
 
 # def loadProfile():
 #     pass

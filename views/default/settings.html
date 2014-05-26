@@ -14,7 +14,7 @@
                 <!-- Current Email -->
                 <label>Your Email:</label>
                 <div class="row">
-                    <div class="col-xs-11 col-sm-11 col-md-11"> {{=LOAD("default", "loadEmail.load")}} </div>
+                    <div class="col-xs-11 col-sm-11 col-md-11"> {{=user.email}} </div>
                     <div class="col-xs-1 col-sm-1 col-md-1 ">
                         <input type="submit" name="submit" value="Edit" class="btn btn-primary pull-right" id="editEmail">
                     </div>
@@ -109,7 +109,7 @@
                 <!-- Current Contact -->
                 <label>Your contact number:</label>
                 <div class="row">
-                    <div class="col-xs-11 col-sm-11 col-md-11"> {{=LOAD('default', 'loadPhone.load')}} </div>
+                    <div class="col-xs-11 col-sm-11 col-md-11"> {{=user.Phone}} </div>
                     <div class="col-xs-1 col-sm-1 col-md-1 ">
                         <input type="submit" name="submit" value="Edit" class="btn btn-primary pull-right" id="editPhone">
                     </div>
@@ -134,7 +134,7 @@
                 <!-- Current Desc -->
                 <label>About me:</label>
                 <div class="row">
-                    <div class="col-xs-11 col-sm-11 col-md-11"> {{=LOAD('default', 'loadDescription.load')}} </div>
+                    <div class="col-xs-11 col-sm-11 col-md-11"> {{=user.AboutMe}} </div>
                     <div class="col-xs-1 col-sm-1 col-md-1 ">
                         <input type="submit" name="submit" value="Edit" class="btn btn-primary pull-right" id="editAboutMe">
                     </div>
@@ -145,7 +145,7 @@
                        <div class="form-group">
                             <label for="">Update About me</label>
                             <div class="input-group">
-                                <textarea type="text" class="form-control" id="newAboutMe" value="heyho">{{=LOAD('default', 'loadDescription.load')}}</textarea>
+                                <textarea type="text" class="form-control" id="newAboutMe" value="heyho">{{=user.AboutMe}}</textarea>
                                 <span class="input-group-addon"></span>
                             </div>
                         </div>
@@ -154,12 +154,12 @@
                 </div>
              </div> <!-- End of Contact setting -->
 
-            {{if auth.user.User_Type == "Carer":}}
+            {{if user.User_Type == "Carer":}}
                 <div class="row">
                     <!-- Current CV -->
                     <label>Update your CV:</label>
                     <div class="row">
-                        <div class="col-xs-11 col-sm-11 col-md-11"> {{=LOAD('default', 'loadCV.load')}} </div>
+                        <div class="col-xs-11 col-sm-11 col-md-11"> <a href="{{=cvUrl}}">Cick to view</a> </div>
                         <div class="col-xs-1 col-sm-1 col-md-1">
                             <input type="submit" name="submit" value="Edit" class="btn btn-primary pull-right" id="editCV">
                         </div>
